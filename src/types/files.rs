@@ -15,11 +15,23 @@ pub enum FileType {
     Css,
     Scss,
     React,
+    Git,
+    Lock,
+    Toml,
+    License,
     None,
 }
 
 pub fn get_file_type(file: String) -> FileType {
     let path = Path::new(&file);
+
+    if let Some(dotfile) = path.file_name().and_then(|file_name| file_name.to_str()) {
+        match dotfile {
+            ".gitignore" | ".gitmodules" => return FileType::Git,
+            "LICENSE" => return FileType::License,
+            _ => {}
+        }
+    }
 
     match path.extension() {
         Some(ext) => {
@@ -36,6 +48,8 @@ pub fn get_file_type(file: String) -> FileType {
                 "css" => FileType::Css,
                 "scss" | "sass" => FileType::Scss,
                 "jsx" | "tsx" => FileType::React,
+                "lock" => FileType::Lock,
+                "toml" => FileType::Toml,
                 _  => FileType::Config
             }
         },
@@ -58,6 +72,10 @@ pub fn get_file_type_icon(file_type: FileType) -> String {
         FileType::Css => format!("{}", "".truecolor(2, 119, 189)),
         FileType::Scss => format!("{}", "".truecolor(205, 103, 153)),
         FileType::React => format!("{}", "".truecolor(0, 216, 255)),
+        FileType::Git => format!("{}", "".truecolor(241, 80, 47)),
+        FileType::Lock => format!("{}", "".truecolor(244, 244, 244)),
+        FileType::Toml => format!("{}", "".truecolor(156, 66, 33)),
+        FileType::License => format!("{}", "".truecolor(249, 252, 33)),
         _ => "".to_string()
     }
 }
