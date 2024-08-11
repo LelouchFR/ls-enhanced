@@ -15,7 +15,11 @@ fn main() -> std::io::Result<()> {
         let file_name_str = file_name.to_string_lossy();
 
         if metadata.is_dir() {
-            println!("{} {}", "".blue(), file_name_str.blue().bold());
+            if file_name_str == ".github" {
+                println!("{} {}", "󰊤".blue(), file_name_str.blue().bold());
+            } else {
+                println!("{} {}", "".blue(), file_name_str.blue().bold());
+            }
         } else if metadata.is_file() {
             println!("{}", files::render_file(file_name_str.to_string(), files::get_file_type(file_name_str.to_string())));
         } else if metadata.is_symlink() {
