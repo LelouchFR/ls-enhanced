@@ -1,5 +1,6 @@
 [package]
 name = "ls-enhanced"
+description = "a better looking ls command"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
