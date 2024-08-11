@@ -1,5 +1,5 @@
-use std::path::Path;
 use colored::Colorize;
+use std::path::Path;
 
 pub enum FileType {
     Config,
@@ -19,6 +19,7 @@ pub enum FileType {
     Lock,
     Toml,
     License,
+    Markdown,
     None,
 }
 
@@ -34,24 +35,23 @@ pub fn get_file_type(file: String) -> FileType {
     }
 
     match path.extension() {
-        Some(ext) => {
-            match ext.to_string_lossy().as_ref() {
-                "rs" => FileType::Rust,
-                "c" => FileType::C,
-                "cpp" | "cc" | "cxx" => FileType::CPP,
-                "cs" => FileType::CS,
-                "zig" => FileType::Zig,
-                "py" => FileType::Python,
-                "js" => FileType::JavaScript,
-                "ts" => FileType::TypeScript,
-                "htm" | "html" => FileType::Html,
-                "css" => FileType::Css,
-                "scss" | "sass" => FileType::Scss,
-                "jsx" | "tsx" => FileType::React,
-                "lock" => FileType::Lock,
-                "toml" => FileType::Toml,
-                _  => FileType::Config
-            }
+        Some(ext) => match ext.to_string_lossy().as_ref() {
+            "rs" => FileType::Rust,
+            "c" => FileType::C,
+            "cpp" | "cc" | "cxx" => FileType::CPP,
+            "cs" => FileType::CS,
+            "zig" => FileType::Zig,
+            "py" => FileType::Python,
+            "js" => FileType::JavaScript,
+            "ts" => FileType::TypeScript,
+            "htm" | "html" => FileType::Html,
+            "css" => FileType::Css,
+            "scss" | "sass" => FileType::Scss,
+            "jsx" | "tsx" => FileType::React,
+            "lock" => FileType::Lock,
+            "toml" => FileType::Toml,
+            "md" => FileType::Markdown,
+            _ => FileType::Config,
         },
         None => FileType::None,
     }
@@ -76,7 +76,8 @@ pub fn get_file_type_icon(file_type: FileType) -> String {
         FileType::Lock => format!("{}", "".truecolor(244, 244, 244)),
         FileType::Toml => format!("{}", "".truecolor(156, 66, 33)),
         FileType::License => format!("{}", "".truecolor(249, 252, 33)),
-        _ => "".to_string()
+        FileType::Markdown => format!("{}", "".truecolor(244, 244, 244)),
+        _ => "".to_string(),
     }
 }
 
