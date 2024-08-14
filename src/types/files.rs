@@ -20,6 +20,7 @@ pub enum FileType {
     Toml,
     License,
     Markdown,
+    Golang,
     None,
 }
 
@@ -31,6 +32,7 @@ pub fn get_file_type(file: String) -> FileType {
         match dotfile {
             ".gitignore" | ".gitmodules" | ".gitattributes" => return FileType::Git,
             "LICENSE" => return FileType::License,
+            "go.mod" | "go.sum" => return FileType::Golang,
             _ => {}
         }
     }
@@ -53,6 +55,7 @@ pub fn get_file_type(file: String) -> FileType {
             "lock" => FileType::Lock,
             "toml" => FileType::Toml,
             "md" => FileType::Markdown,
+            "go" => FileType::Golang,
             _ => FileType::Config,
         },
         None => FileType::None,
@@ -79,6 +82,7 @@ pub fn get_file_type_icon(file_type: FileType) -> String {
         FileType::Toml => "".truecolor(156, 66, 33),
         FileType::License => "".truecolor(249, 252, 33),
         FileType::Markdown => "".truecolor(244, 244, 244),
+        FileType::Golang => "󰟓".truecolor(0, 180, 224),
         _ => "".into(),
     };
 
