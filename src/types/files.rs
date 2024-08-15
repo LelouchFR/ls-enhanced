@@ -21,6 +21,10 @@ pub enum FileType {
     License,
     Markdown,
     Golang,
+    Svg,
+    Photo,
+    Audio,
+    Video,
     None,
 }
 
@@ -56,6 +60,16 @@ pub fn get_file_type(file: String) -> FileType {
             "toml" => FileType::Toml,
             "md" => FileType::Markdown,
             "go" => FileType::Golang,
+            "svg" => FileType::Svg,
+            "png" | "jpg" | "jpeg" => FileType::Photo,
+            "mp3" | "wma" | "wav" | "voc" | "tta" | "opus" | "mogg" | "oga" | "nmf" | "movpkg"
+            | "mmf" | "m4b" | "m4a" | "iklax" | "flac" | "au" | "aiff" | "aax" | "aac" => {
+                FileType::Audio
+            }
+            "webm" | "mkv" | "flv" | "vob" | "ogv" | "ogg" | "rrc" | "gifv" | "mng" | "mov"
+            | "avi" | "qt" | "wmv" | "yuv" | "rm" | "asf" | "amv" | "mp4" | "m4p" | "mpg"
+            | "mp2" | "mpeg" | "mpe" | "mpv" | "m4v" | "svi" | "3gp" | "3g2" | "mxf" | "roq"
+            | "nsv" | "f4v" | "f4p" | "f4a" | "f4b" => FileType::Video,
             _ => FileType::Config,
         },
         None => FileType::None,
@@ -83,6 +97,10 @@ pub fn get_file_type_icon(file_type: FileType) -> String {
         FileType::License => "".truecolor(249, 252, 33),
         FileType::Markdown => "".truecolor(244, 244, 244),
         FileType::Golang => "󰟓".truecolor(0, 180, 224),
+        FileType::Svg => "󰜡".truecolor(255, 177, 59),
+        FileType::Photo => "".truecolor(163, 76, 245),
+        FileType::Audio => "󰝚".truecolor(163, 76, 245),
+        FileType::Video => "".truecolor(163, 76, 245),
         _ => "".into(),
     };
 
