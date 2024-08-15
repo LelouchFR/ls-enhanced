@@ -1,0 +1,20 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  Publish-Crate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Building Project
+        run: cargo build --release
+      - name: Check Formatting
+        run: cargo fmt -- --check --verbose
+      - name: Publish to crates.io
+        run: cargo publish --token=${{ secrets.CARGO_TOKEN }}
