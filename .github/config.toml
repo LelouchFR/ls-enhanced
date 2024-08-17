@@ -1,0 +1,31 @@
+[format]
+icons = true
+folders_first = true
+inline = true
+dotfiles = true
+colors = true
+
+[colors]
+config = { red = 128, green = 128, blue = 128 }
+rust = { red = 206, green = 66, blue = 43 }
+c = { red = 57, green = 74, blue = 171 }
+cpp = { red = 0, green = 89, blue = 156 }
+cs = { red = 149, green = 60, blue = 173 }
+zig = { red = 247, green = 164, blue = 29 }
+python = { red = 255, green = 224, blue = 82 }
+javascript = { red = 240, green = 219, blue = 79 }
+typescript = { red = 0, green = 122, blue = 204 }
+html = { red = 225, green = 78, blue = 29 }
+css = { red = 2, green = 119, blue = 189 }
+scss = { red = 205, green = 103, blue = 153 }
+react = { red = 0, green = 216, blue = 255 }
+git = { red = 241, green = 80, blue = 47 }
+lock = { red = 244, green = 244, blue = 244 }
+toml = { red = 156, green = 66, blue = 33 }
+license = { red = 249, green = 252, blue = 33 }
+markdown = { red = 244, green = 244, blue = 244 }
+golang = { red = 0, green = 180, blue = 224 }
+svg = { red = 255, green = 177, blue = 59 }
+photo = { red = 163, green = 76, blue = 245 }
+audio = { red = 163, green = 76, blue = 245 }
+video = { red = 163, green = 76, blue = 245 }
