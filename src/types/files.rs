@@ -25,6 +25,7 @@ pub enum FileType {
     Photo,
     Audio,
     Video,
+    Blender,
     None,
 }
 
@@ -70,6 +71,7 @@ pub fn get_file_type(file: String) -> FileType {
             | "avi" | "qt" | "wmv" | "yuv" | "rm" | "asf" | "amv" | "mp4" | "m4p" | "mpg"
             | "mp2" | "mpeg" | "mpe" | "mpv" | "m4v" | "svi" | "3gp" | "3g2" | "mxf" | "roq"
             | "nsv" | "f4v" | "f4p" | "f4a" | "f4b" => FileType::Video,
+            "blend" => FileType::Blender,
             _ => FileType::Config,
         },
         None => FileType::None,
@@ -101,6 +103,7 @@ pub fn get_file_type_icon(file_type: FileType) -> String {
         FileType::Photo => "".truecolor(163, 76, 245),
         FileType::Audio => "󰝚".truecolor(163, 76, 245),
         FileType::Video => "".truecolor(163, 76, 245),
+        FileType::Blender => "󰂫".truecolor(234, 118, 0),
         _ => "".into(),
     };
 

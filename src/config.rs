@@ -7,6 +7,13 @@ pub struct Format {
     pub folders_first: bool,
     pub inline: bool,
     pub dotfiles: bool,
+    pub colors: bool,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Plugin {
+    pub icons: HashMap<String, String>,
+    pub colors: HashMap<String, Color>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -19,6 +26,7 @@ pub struct Color {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
     pub format: Format,
+    pub plugins: HashMap<String, Plugin>,
     pub colors: HashMap<String, Color>,
 }
 

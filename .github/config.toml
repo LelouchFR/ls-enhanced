@@ -5,6 +5,9 @@ inline = true
 dotfiles = true
 colors = true
 
+[plugins]
+git = { icons = { untracked = "✗", tracked = "✓" }, colors = { untracked = { red = 255, green = 255, blue = 255 }, tracked = { red = 255, green = 255, blue = 255 } } }
+
 [colors]
 config = { red = 128, green = 128, blue = 128 }
 rust = { red = 206, green = 66, blue = 43 }
@@ -29,3 +32,4 @@ svg = { red = 255, green = 177, blue = 59 }
 photo = { red = 163, green = 76, blue = 245 }
 audio = { red = 163, green = 76, blue = 245 }
 video = { red = 163, green = 76, blue = 245 }
+blender = { red = 234, green = 118, blue = 0 }
