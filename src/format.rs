@@ -12,7 +12,7 @@ pub fn format_ls(config: Config, path: String) -> std::io::Result<()> {
     }
 }
 
-pub fn inline_format(_config: Config, path: String) -> std::io::Result<()> {
+pub fn inline_format(config: Config, path: String) -> std::io::Result<()> {
     let mut directories: Vec<String> = Vec::new();
     let mut files: Vec<String> = Vec::new();
     let mut symlinks: Vec<String> = Vec::new();
@@ -32,16 +32,25 @@ pub fn inline_format(_config: Config, path: String) -> std::io::Result<()> {
 
         if metadata.is_dir() {
             if file_name_str == ".github" {
-                directories.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()));
+                if config.format.icons {
+                    directories.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
+                } else {
+                    directories.push(format!("{}", file_name_str.blue().bold()))
+                }
             } else {
-                directories.push(format!("{} {}", "".blue(), file_name_str.blue().bold()));
+                if config.format.icons {
+                    directories.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                } else {
+                    directories.push(format!("{}", file_name_str.blue().bold()))
+                }
             }
         } else if metadata.is_file() {
             files.push(format!(
                 "{}",
                 files::render_file(
                     file_name_str.to_string(),
-                    files::get_file_type(file_name_str.to_string())
+                    files::get_file_type(file_name_str.to_string()),
+                    &config
                 )
             ));
         } else if metadata.is_symlink() {
@@ -79,7 +88,7 @@ pub fn inline_format(_config: Config, path: String) -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn multi_line_format(_config: Config, path: String) -> std::io::Result<()> {
+pub fn multi_line_format(config: Config, path: String) -> std::io::Result<()> {
     let mut result: Vec<String> = Vec::new();
     for entry in fs::read_dir(path)? {
         let entry = entry?;
@@ -89,16 +98,25 @@ pub fn multi_line_format(_config: Config, path: String) -> std::io::Result<()> {
 
         if metadata.is_dir() {
             if file_name_str == ".github" {
-                result.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
+                if config.format.icons {
+                    result.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
+                } else {
+                    result.push(format!("{}", file_name_str.blue().bold()))
+                }
             } else {
-                result.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                if config.format.icons {
+                    result.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                } else {
+                    result.push(format!("{}", file_name_str.blue().bold()))
+                }
             }
         } else if metadata.is_file() {
             result.push(format!(
                 "{}",
                 files::render_file(
                     file_name_str.to_string(),
-                    files::get_file_type(file_name_str.to_string())
+                    files::get_file_type(file_name_str.to_string()),
+                    &config
                 )
             ));
         } else if metadata.is_symlink() {
