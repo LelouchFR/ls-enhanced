@@ -1,3 +1,4 @@
+use colored::Colorize;
 use serde_derive::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
@@ -6,7 +7,6 @@ use std::io::Write;
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Format {
     pub icons: bool,
-    pub folders_first: bool,
     pub inline: bool,
     pub dotfiles: bool,
     pub colors: bool,
@@ -35,14 +35,12 @@ pub struct Config {
 impl Format {
     pub fn new(
         icons: bool,
-        folders_first: bool,
         inline: bool,
         dotfiles: bool,
         colors: bool,
     ) -> Format {
         Format {
             icons,
-            folders_first,
             inline,
             dotfiles,
             colors,
@@ -60,6 +58,30 @@ impl Color {
     pub fn new(red: u8, green: u8, blue: u8) -> Color {
         Color { red, green, blue }
     }
+}
+
+pub fn get_colors(config: &Config, config_color: &str) -> Color {
+    Color {
+        red: config
+            .colors
+            .get(config_color)
+            .unwrap_or(create_config().colors.get(config_color).unwrap())
+            .red,
+        green: config
+            .colors
+            .get(config_color)
+            .unwrap_or(create_config().colors.get(config_color).unwrap())
+            .green,
+        blue: config
+            .colors
+            .get(config_color)
+            .unwrap_or(create_config().colors.get(config_color).unwrap())
+            .blue,
+    }
+}
+
+pub fn set_truecolor(file_type_icon: &str, color: &Color) -> colored::ColoredString {
+    file_type_icon.truecolor(color.red, color.green, color.blue)
 }
 
 pub fn create_config() -> Config {
@@ -102,12 +124,13 @@ pub fn create_config() -> Config {
         ("audio".to_string(), Color::new(163, 76, 245)),
         ("video".to_string(), Color::new(163, 76, 245)),
         ("blender".to_string(), Color::new(234, 118, 0)),
+        ("lua".to_string(), Color::new(0, 0, 128)),
+        ("vim".to_string(), Color::new(1, 152, 51)),
     ]);
 
     Config {
         format: Format {
             icons: true,
-            folders_first: true,
             inline: true,
             dotfiles: true,
             colors: true,

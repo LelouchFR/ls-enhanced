@@ -33,3 +33,5 @@ photo = { red = 163, green = 76, blue = 245 }
 audio = { red = 163, green = 76, blue = 245 }
 video = { red = 163, green = 76, blue = 245 }
 blender = { red = 234, green = 118, blue = 0 }
+lua = { red = 0, green = 0, blue = 128 }
+vim = { red = 1, green = 152, blue = 51 }
