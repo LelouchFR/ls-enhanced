@@ -33,12 +33,7 @@ pub struct Config {
 }
 
 impl Format {
-    pub fn new(
-        icons: bool,
-        inline: bool,
-        dotfiles: bool,
-        colors: bool,
-    ) -> Format {
+    pub fn new(icons: bool, inline: bool, dotfiles: bool, colors: bool) -> Format {
         Format {
             icons,
             inline,
