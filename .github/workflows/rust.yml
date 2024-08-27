@@ -14,6 +14,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Building Project
         run: cargo build --release
+      - name: Check unit tests
+        run: cargo test
       - name: Check Formatting
         run: cargo fmt -- --check --verbose
       - name: Publish to crates.io

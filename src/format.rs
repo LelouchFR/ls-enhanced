@@ -31,30 +31,42 @@ pub fn inline_format(config: Config, path: String) -> std::io::Result<()> {
         }
 
         if metadata.is_dir() {
-            if file_name_str == ".github" {
-                if config.format.icons {
-                    directories.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
-                } else {
-                    directories.push(format!("{}", file_name_str.blue().bold()))
-                }
+            if !config.format.dotfiles && file_name_str.starts_with(".") {
+                continue;
             } else {
-                if config.format.icons {
-                    directories.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                if file_name_str == ".github" {
+                    if config.format.icons {
+                        directories.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
+                    } else {
+                        directories.push(format!("{}", file_name_str.blue().bold()))
+                    }
                 } else {
-                    directories.push(format!("{}", file_name_str.blue().bold()))
+                    if config.format.icons {
+                        directories.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                    } else {
+                        directories.push(format!("{}", file_name_str.blue().bold()))
+                    }
                 }
             }
         } else if metadata.is_file() {
-            files.push(format!(
-                "{}",
-                files::render_file(
-                    file_name_str.to_string(),
-                    files::get_file_type(file_name_str.to_string()),
-                    &config
-                )
-            ));
+            if !config.format.dotfiles && file_name_str.starts_with(".") {
+                continue;
+            } else {
+                files.push(format!(
+                    "{}",
+                    files::render_file(
+                        file_name_str.to_string(),
+                        files::get_file_type(file_name_str.to_string()),
+                        &config
+                    )
+                ));
+            }
         } else if metadata.is_symlink() {
-            symlinks.push(format!("{}", file_name_str.green().bold()));
+            if !config.format.dotfiles && file_name_str.starts_with(".") {
+                continue;
+            } else {
+                symlinks.push(format!("{}", file_name_str.green().bold()));
+            }
         }
     }
 
@@ -97,30 +109,42 @@ pub fn multi_line_format(config: Config, path: String) -> std::io::Result<()> {
         let file_name_str = file_name.to_string_lossy();
 
         if metadata.is_dir() {
-            if file_name_str == ".github" {
-                if config.format.icons {
-                    result.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
-                } else {
-                    result.push(format!("{}", file_name_str.blue().bold()))
-                }
+            if !config.format.dotfiles && file_name_str.starts_with(".") {
+                continue;
             } else {
-                if config.format.icons {
-                    result.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                if file_name_str == ".github" {
+                    if config.format.icons {
+                        result.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
+                    } else {
+                        result.push(format!("{}", file_name_str.blue().bold()))
+                    }
                 } else {
-                    result.push(format!("{}", file_name_str.blue().bold()))
+                    if config.format.icons {
+                        result.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                    } else {
+                        result.push(format!("{}", file_name_str.blue().bold()))
+                    }
                 }
             }
         } else if metadata.is_file() {
-            result.push(format!(
-                "{}",
-                files::render_file(
-                    file_name_str.to_string(),
-                    files::get_file_type(file_name_str.to_string()),
-                    &config
-                )
-            ));
+            if !config.format.dotfiles && file_name_str.starts_with(".") {
+                continue;
+            } else {
+                result.push(format!(
+                    "{}",
+                    files::render_file(
+                        file_name_str.to_string(),
+                        files::get_file_type(file_name_str.to_string()),
+                        &config
+                    )
+                ));
+            }
         } else if metadata.is_symlink() {
-            result.push(format!("{}", file_name_str.green().bold()));
+            if !config.format.dotfiles && file_name_str.starts_with(".") {
+                continue;
+            } else {
+                result.push(format!("{}", file_name_str.green().bold()));
+            }
         }
     }
 

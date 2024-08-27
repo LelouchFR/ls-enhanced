@@ -55,6 +55,44 @@ impl Color {
     }
 }
 
+pub fn get_config_colors(config: &Config) -> HashMap<String, Color> {
+    let mut result: HashMap<String, Color> = HashMap::new();
+    let config_colors: Vec<&str> = vec![
+        "rust",
+        "config",
+        "c",
+        "cpp",
+        "cs",
+        "zig",
+        "python",
+        "javascript",
+        "typescript",
+        "html",
+        "css",
+        "scss",
+        "react",
+        "git",
+        "lock",
+        "toml",
+        "license",
+        "markdown",
+        "golang",
+        "svg",
+        "photo",
+        "audio",
+        "video",
+        "blender",
+        "lua",
+        "vim",
+    ];
+
+    for config_color in config_colors {
+        result.insert(config_color.to_string(), get_colors(&config, config_color));
+    }
+
+    result
+}
+
 pub fn get_colors(config: &Config, config_color: &str) -> Color {
     Color {
         red: config

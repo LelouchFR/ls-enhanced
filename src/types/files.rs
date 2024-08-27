@@ -1,7 +1,7 @@
 use colored::Colorize;
 use std::path::Path;
 
-use crate::config::{get_colors, set_truecolor, Config};
+use crate::config::{get_config_colors, set_truecolor, Config};
 
 pub enum FileType {
     Config,
@@ -86,7 +86,7 @@ pub fn get_file_type(file: String) -> FileType {
 }
 
 pub fn get_file_type_icon(file_type: FileType, config: &Config) -> String {
-    let fti = match file_type {
+    let fti: &str = match file_type {
         FileType::Rust => "",
         FileType::Config => "",
         FileType::C => "",
@@ -119,60 +119,39 @@ pub fn get_file_type_icon(file_type: FileType, config: &Config) -> String {
         return "".to_string();
     } else {
         let fti_colored = if config.format.colors {
-            let rust_colors = get_colors(&config, "rust");
-            let config_colors = get_colors(&config, "config");
-            let c_colors = get_colors(&config, "c");
-            let cpp_colors = get_colors(&config, "cpp");
-            let cs_colors = get_colors(&config, "cs");
-            let zig_colors = get_colors(&config, "zig");
-            let python_colors = get_colors(&config, "python");
-            let js_colors = get_colors(&config, "javascript");
-            let ts_colors = get_colors(&config, "typescript");
-            let html_colors = get_colors(&config, "html");
-            let css_colors = get_colors(&config, "css");
-            let scss_colors = get_colors(&config, "scss");
-            let react_colors = get_colors(&config, "react");
-            let git_colors = get_colors(&config, "git");
-            let lock_colors = get_colors(&config, "lock");
-            let toml_colors = get_colors(&config, "toml");
-            let license_colors = get_colors(&config, "license");
-            let md_colors = get_colors(&config, "markdown");
-            let go_colors = get_colors(&config, "golang");
-            let svg_colors = get_colors(&config, "svg");
-            let photo_colors = get_colors(&config, "photo");
-            let audio_colors = get_colors(&config, "audio");
-            let video_colors = get_colors(&config, "video");
-            let blender_colors = get_colors(&config, "blender");
-            let lua_colors = get_colors(&config, "lua");
-            let vim_colors = get_colors(&config, "vim");
+            let config_colors = get_config_colors(&config);
 
             match file_type {
-                FileType::Rust => set_truecolor(fti, &rust_colors),
-                FileType::Config => set_truecolor(fti, &config_colors),
-                FileType::C => set_truecolor(fti, &c_colors),
-                FileType::CPP => set_truecolor(fti, &cpp_colors),
-                FileType::CS => set_truecolor(fti, &cs_colors),
-                FileType::Zig => set_truecolor(fti, &zig_colors),
-                FileType::Python => set_truecolor(fti, &python_colors),
-                FileType::JavaScript => set_truecolor(fti, &js_colors),
-                FileType::TypeScript => set_truecolor(fti, &ts_colors),
-                FileType::Html => set_truecolor(fti, &html_colors),
-                FileType::Css => set_truecolor(fti, &css_colors),
-                FileType::Scss => set_truecolor(fti, &scss_colors),
-                FileType::React => set_truecolor(fti, &react_colors),
-                FileType::Git => set_truecolor(fti, &git_colors),
-                FileType::Lock => set_truecolor(fti, &lock_colors),
-                FileType::Toml => set_truecolor(fti, &toml_colors),
-                FileType::License => set_truecolor(fti, &license_colors),
-                FileType::Markdown => set_truecolor(fti, &md_colors),
-                FileType::Golang => set_truecolor(fti, &go_colors),
-                FileType::Svg => set_truecolor(fti, &svg_colors),
-                FileType::Photo => set_truecolor(fti, &photo_colors),
-                FileType::Audio => set_truecolor(fti, &audio_colors),
-                FileType::Video => set_truecolor(fti, &video_colors),
-                FileType::Blender => set_truecolor(fti, &blender_colors),
-                FileType::Lua => set_truecolor(fti, &lua_colors),
-                FileType::Vim => set_truecolor(fti, &vim_colors),
+                FileType::Rust => set_truecolor(fti, config_colors.get("rust").unwrap()),
+                FileType::Config => set_truecolor(fti, config_colors.get("config").unwrap()),
+                FileType::C => set_truecolor(fti, config_colors.get("c").unwrap()),
+                FileType::CPP => set_truecolor(fti, config_colors.get("cpp").unwrap()),
+                FileType::CS => set_truecolor(fti, config_colors.get("cs").unwrap()),
+                FileType::Zig => set_truecolor(fti, config_colors.get("zig").unwrap()),
+                FileType::Python => set_truecolor(fti, config_colors.get("python").unwrap()),
+                FileType::JavaScript => {
+                    set_truecolor(fti, config_colors.get("javascript").unwrap())
+                }
+                FileType::TypeScript => {
+                    set_truecolor(fti, config_colors.get("typescript").unwrap())
+                }
+                FileType::Html => set_truecolor(fti, config_colors.get("html").unwrap()),
+                FileType::Css => set_truecolor(fti, config_colors.get("css").unwrap()),
+                FileType::Scss => set_truecolor(fti, config_colors.get("scss").unwrap()),
+                FileType::React => set_truecolor(fti, config_colors.get("react").unwrap()),
+                FileType::Git => set_truecolor(fti, config_colors.get("git").unwrap()),
+                FileType::Lock => set_truecolor(fti, config_colors.get("lock").unwrap()),
+                FileType::Toml => set_truecolor(fti, config_colors.get("toml").unwrap()),
+                FileType::License => set_truecolor(fti, config_colors.get("license").unwrap()),
+                FileType::Markdown => set_truecolor(fti, config_colors.get("markdown").unwrap()),
+                FileType::Golang => set_truecolor(fti, config_colors.get("golang").unwrap()),
+                FileType::Svg => set_truecolor(fti, config_colors.get("svg").unwrap()),
+                FileType::Photo => set_truecolor(fti, config_colors.get("photo").unwrap()),
+                FileType::Audio => set_truecolor(fti, config_colors.get("audio").unwrap()),
+                FileType::Video => set_truecolor(fti, config_colors.get("video").unwrap()),
+                FileType::Blender => set_truecolor(fti, config_colors.get("blender").unwrap()),
+                FileType::Lua => set_truecolor(fti, config_colors.get("lua").unwrap()),
+                FileType::Vim => set_truecolor(fti, config_colors.get("vim").unwrap()),
                 _ => fti.white(),
             }
         } else {

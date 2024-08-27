@@ -2,8 +2,9 @@
 <h3 align="center">a better looking file listing tool</h3>
 <hr />
 
-[github]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github
-[crates-io]: https://img.shields.io/badge/crates.io-fc8d62?style=for-the-badge&labelColor=555555&logo=rust
+<img src=".github/example.png" width="200">
+
+<p><a href="https://github.com/lelouchfr/ls-enhanced"><img src="https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github" /></a> <a href="https://crates.io/crates/ls-enhanced"><img src="https://img.shields.io/badge/crates.io-fc8d62?style=for-the-badge&labelColor=555555&logo=rust" /></a></p>
 
 ## Installation
 
