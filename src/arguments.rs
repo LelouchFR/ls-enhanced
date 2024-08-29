@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 pub enum Arguments {
     All,
     List,
@@ -7,7 +7,7 @@ pub enum Arguments {
     Help,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(PartialEq)]
 pub struct Argument {
     pub name: String,
     pub description: Option<String>,
@@ -107,4 +107,20 @@ pub fn create_arg() -> Vec<Argument> {
     let possible_args: Vec<Argument> = vec![all, list, help, icon, recursive];
 
     possible_args
+}
+
+pub fn generate_help_text() -> std::io::Result<()> {
+    let args = create_arg();
+
+    for arg in args {
+        println!(
+            "Name: {}\nShorthand: {}\nLonghand: {}\nDescription: {}\n",
+            arg.name,
+            arg.short.unwrap(),
+            arg.long.unwrap(),
+            arg.description.unwrap(),
+        );
+    }
+
+    Ok(())
 }

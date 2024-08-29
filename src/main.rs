@@ -1,9 +1,9 @@
 pub mod arguments;
 pub mod config;
-pub mod format;
+pub mod formatting;
 pub mod types;
 
-use crate::{arguments::Arguments, config::Config, format::format_ls};
+use crate::{arguments::Arguments, config::Config, formatting::format::format_ls};
 use std::{env, fs, path::Path, process::exit};
 use toml;
 
@@ -43,13 +43,13 @@ fn main() -> std::io::Result<()> {
         } else {
             for possible_arg in &possible_args {
                 if let Some(ref short) = possible_arg.short {
-                    if arg == *short {
+                    if arg == *short && !args.contains(&possible_arg.get_arg_type()) {
                         args.push(possible_arg.get_arg_type());
                     }
                 }
 
                 if let Some(ref long) = possible_arg.long {
-                    if arg == *long {
+                    if arg == *long && !args.contains(&possible_arg.get_arg_type()) {
                         args.push(possible_arg.get_arg_type());
                     }
                 }
