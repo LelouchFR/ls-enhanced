@@ -3,8 +3,8 @@ pub mod config;
 pub mod format;
 pub mod types;
 
-use crate::{config::Config, format::format_ls};
-use std::{env, fs, process::exit};
+use crate::{arguments::Arguments, config::Config, format::format_ls};
+use std::{env, fs, path::Path, process::exit};
 use toml;
 
 fn main() -> std::io::Result<()> {
@@ -32,9 +32,32 @@ fn main() -> std::io::Result<()> {
         }
     };
 
-    // let _ = arguments::create_arg();
+    let possible_args = arguments::create_arg();
+    let mut args: Vec<&Arguments> = Vec::new();
+    let mut path: Option<String> = Some(".".to_string());
 
-    format_ls(config, ".".to_string())
+    for arg in env::args() {
+        let possible_path = Path::new(&arg);
+        if possible_path.exists() && possible_path.is_dir() {
+            path = Some(possible_path.to_string_lossy().to_string());
+        } else {
+            for possible_arg in &possible_args {
+                if let Some(ref short) = possible_arg.short {
+                    if arg == *short {
+                        args.push(possible_arg.get_arg_type());
+                    }
+                }
+
+                if let Some(ref long) = possible_arg.long {
+                    if arg == *long {
+                        args.push(possible_arg.get_arg_type());
+                    }
+                }
+            }
+        }
+    }
+
+    format_ls(config, path.unwrap(), args)
 }
 
 #[cfg(test)]
@@ -55,6 +78,6 @@ mod tests {
 
         let config = config::create_config();
 
-        let _ = format_ls(config, temp_dir.to_string());
+        let _ = format_ls(config, temp_dir.to_string(), vec![]);
     }
 }

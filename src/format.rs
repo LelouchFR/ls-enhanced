@@ -1,10 +1,10 @@
-use crate::{config::Config, types::files};
+use crate::{arguments::Arguments, config::Config, types::files};
 use colored::Colorize;
 use std::cmp;
 use std::fs;
 use term_size;
 
-pub fn format_ls(config: Config, path: String) -> std::io::Result<()> {
+pub fn format_ls(config: Config, path: String, _args: Vec<&Arguments>) -> std::io::Result<()> {
     if config.format.inline {
         inline_format(config, path)
     } else {
