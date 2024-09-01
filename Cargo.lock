@@ -48,7 +48,7 @@ checksum = "a5f43f184355eefb8d17fc948dbecf6c13be3c141f20d834ae842193a448c72a"
 
 [[package]]
 name = "ls-enhanced"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "colored",
  "serde",
