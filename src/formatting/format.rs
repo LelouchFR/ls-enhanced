@@ -1,14 +1,42 @@
-use crate::{config::Config, types::files};
+use crate::{
+    arguments::{generate_help_text, Arguments},
+    config::Config,
+    formatting::permissions::{format_permissions, read_permission},
+    types::files,
+};
 use colored::Colorize;
 use std::cmp;
 use std::fs;
 use term_size;
 
-pub fn format_ls(config: Config, path: String) -> std::io::Result<()> {
+pub fn format_ls(mut config: Config, path: String, args: Vec<&Arguments>) -> std::io::Result<()> {
+    let mut show_permissions = false;
+
+    for arg in args {
+        let _ = match arg {
+            &Arguments::All => {
+                config.format.dotfiles = true;
+            }
+            &Arguments::List => {
+                config.format.inline = false;
+                show_permissions = true;
+            }
+            &Arguments::Icon => {
+                config.format.icons = true;
+            }
+            &Arguments::Help => {
+                let _ = generate_help_text();
+            }
+            &Arguments::Recursive => {
+                todo!();
+            }
+        };
+    }
+
     if config.format.inline {
         inline_format(config, path)
     } else {
-        multi_line_format(config, path)
+        multi_line_format(config, path, show_permissions)
     }
 }
 
@@ -100,13 +128,27 @@ pub fn inline_format(config: Config, path: String) -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn multi_line_format(config: Config, path: String) -> std::io::Result<()> {
+pub fn multi_line_format(
+    config: Config,
+    path: String,
+    show_permissions: bool,
+) -> std::io::Result<()> {
     let mut result: Vec<String> = Vec::new();
-    for entry in fs::read_dir(path)? {
+    for entry in fs::read_dir(path.clone())? {
         let entry = entry?;
         let metadata = entry.metadata()?;
         let file_name = entry.file_name();
         let file_name_str = file_name.to_string_lossy();
+        let permissions = {
+            if show_permissions {
+                format!(
+                    "{} ",
+                    format_permissions(&file_name_str, read_permission(&file_name_str))
+                )
+            } else {
+                "".to_string()
+            }
+        };
 
         if metadata.is_dir() {
             if !config.format.dotfiles && file_name_str.starts_with(".") {
@@ -114,15 +156,25 @@ pub fn multi_line_format(config: Config, path: String) -> std::io::Result<()> {
             } else {
                 if file_name_str == ".github" {
                     if config.format.icons {
-                        result.push(format!("{} {}", "󰊤".blue(), file_name_str.blue().bold()))
+                        result.push(format!(
+                            "{}{} {}",
+                            permissions,
+                            "󰊤".blue(),
+                            file_name_str.blue().bold()
+                        ))
                     } else {
-                        result.push(format!("{}", file_name_str.blue().bold()))
+                        result.push(format!("{}{}", permissions, file_name_str.blue().bold()))
                     }
                 } else {
                     if config.format.icons {
-                        result.push(format!("{} {}", "".blue(), file_name_str.blue().bold()))
+                        result.push(format!(
+                            "{}{} {}",
+                            permissions,
+                            "".blue(),
+                            file_name_str.blue().bold()
+                        ))
                     } else {
-                        result.push(format!("{}", file_name_str.blue().bold()))
+                        result.push(format!("{}{}", permissions, file_name_str.blue().bold()))
                     }
                 }
             }
@@ -131,7 +183,8 @@ pub fn multi_line_format(config: Config, path: String) -> std::io::Result<()> {
                 continue;
             } else {
                 result.push(format!(
-                    "{}",
+                    "{}{}",
+                    permissions,
                     files::render_file(
                         file_name_str.to_string(),
                         files::get_file_type(file_name_str.to_string()),
@@ -143,7 +196,7 @@ pub fn multi_line_format(config: Config, path: String) -> std::io::Result<()> {
             if !config.format.dotfiles && file_name_str.starts_with(".") {
                 continue;
             } else {
-                result.push(format!("{}", file_name_str.green().bold()));
+                result.push(format!("{}{}", permissions, file_name_str.green().bold()));
             }
         }
     }
