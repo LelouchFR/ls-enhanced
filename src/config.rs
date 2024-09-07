@@ -70,6 +70,7 @@ pub fn get_config_colors(config: &Config) -> HashMap<String, Color> {
         "html",
         "css",
         "scss",
+        "less",
         "react",
         "git",
         "lock",
@@ -84,6 +85,14 @@ pub fn get_config_colors(config: &Config) -> HashMap<String, Color> {
         "blender",
         "lua",
         "vim",
+        "gleam",
+        "php",
+        "json",
+        "yaml",
+        "kotlin",
+        "java",
+        "assembly",
+        "twig",
     ];
 
     for config_color in config_colors {
@@ -145,6 +154,7 @@ pub fn create_config() -> Config {
         ("html".to_string(), Color::new(225, 78, 29)),
         ("css".to_string(), Color::new(2, 119, 189)),
         ("scss".to_string(), Color::new(205, 103, 153)),
+        ("less".to_string(), Color::new(33, 70, 116)),
         ("react".to_string(), Color::new(0, 216, 255)),
         ("git".to_string(), Color::new(241, 80, 47)),
         ("lock".to_string(), Color::new(244, 244, 244)),
@@ -159,6 +169,14 @@ pub fn create_config() -> Config {
         ("blender".to_string(), Color::new(234, 118, 0)),
         ("lua".to_string(), Color::new(0, 0, 128)),
         ("vim".to_string(), Color::new(1, 152, 51)),
+        ("gleam".to_string(), Color::new(255, 175, 243)),
+        ("php".to_string(), Color::new(119, 123, 179)),
+        ("json".to_string(), Color::new(247, 223, 30)),
+        ("yaml".to_string(), Color::new(203, 23, 30)),
+        ("kotlin".to_string(), Color::new(127, 82, 255)),
+        ("java".to_string(), Color::new(234, 45, 46)),
+        ("assembly".to_string(), Color::new(37, 52, 76)),
+        ("twig".to_string(), Color::new(160, 203, 41)),
     ]);
 
     Config {

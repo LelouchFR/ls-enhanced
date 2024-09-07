@@ -21,6 +21,7 @@ typescript = { red = 0, green = 122, blue = 204 }
 html = { red = 225, green = 78, blue = 29 }
 css = { red = 2, green = 119, blue = 189 }
 scss = { red = 205, green = 103, blue = 153 }
+less = { red = 33, green = 70, blue = 116 }
 react = { red = 0, green = 216, blue = 255 }
 git = { red = 241, green = 80, blue = 47 }
 lock = { red = 244, green = 244, blue = 244 }
@@ -35,3 +36,11 @@ video = { red = 163, green = 76, blue = 245 }
 blender = { red = 234, green = 118, blue = 0 }
 lua = { red = 0, green = 0, blue = 128 }
 vim = { red = 1, green = 152, blue = 51 }
+gleam = { red = 255, green = 175, blue = 243 }
+php = { red = 119, green = 123, blue = 179 }
+json = { red = 247, green = 223, blue = 30 }
+yaml = { red = 203, green = 23, blue = 30 }
+kotlin = { red = 127, green = 82, blue = 255 }
+java = { red = 234, green = 45, blue = 46 }
+assembly = { red = 37, green = 52, blue = 76 }
+twig = { red = 160, green = 203, blue = 41 }

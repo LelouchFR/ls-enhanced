@@ -10,7 +10,8 @@ use std::fs;
 use term_size;
 
 pub fn format_ls(mut config: Config, path: String, args: Vec<&Arguments>) -> std::io::Result<()> {
-    let mut show_permissions = false;
+    let mut show_permissions: bool = false;
+    let mut recursive: bool = false;
 
     for arg in args {
         let _ = match arg {
@@ -25,22 +26,24 @@ pub fn format_ls(mut config: Config, path: String, args: Vec<&Arguments>) -> std
                 config.format.icons = true;
             }
             &Arguments::Help => {
-                let _ = generate_help_text();
+                return generate_help_text();
             }
-            &Arguments::Recursive => {
-                todo!();
-            }
+            &Arguments::Recursive => recursive = true,
         };
     }
 
     if config.format.inline {
-        inline_format(config, path)
+        inline_format(&config, path)
     } else {
-        multi_line_format(config, path, show_permissions)
+        if recursive {
+            recursive_format_ls(&config, 0, &path, show_permissions)
+        } else {
+            multi_line_format(&config, path, show_permissions)
+        }
     }
 }
 
-pub fn inline_format(config: Config, path: String) -> std::io::Result<()> {
+pub fn inline_format(config: &Config, path: String) -> std::io::Result<()> {
     let mut directories: Vec<String> = Vec::new();
     let mut files: Vec<String> = Vec::new();
     let mut symlinks: Vec<String> = Vec::new();
@@ -129,7 +132,7 @@ pub fn inline_format(config: Config, path: String) -> std::io::Result<()> {
 }
 
 pub fn multi_line_format(
-    config: Config,
+    config: &Config,
     path: String,
     show_permissions: bool,
 ) -> std::io::Result<()> {
@@ -143,13 +146,16 @@ pub fn multi_line_format(
             if show_permissions {
                 format!(
                     "{} ",
-                    format_permissions(&file_name_str, read_permission(&file_name_str))
+                    format_permissions(
+                        config,
+                        &format!("{}/{}", path, &file_name_str),
+                        read_permission(&format!("{}/{}", path, &file_name_str))
+                    )
                 )
             } else {
                 "".to_string()
             }
         };
-
         if metadata.is_dir() {
             if !config.format.dotfiles && file_name_str.starts_with(".") {
                 continue;
@@ -203,6 +209,34 @@ pub fn multi_line_format(
 
     for entry in &result {
         println!("{}", entry);
+    }
+
+    Ok(())
+}
+
+pub fn recursive_format_ls(
+    config: &Config,
+    depth: i8,
+    path: &str,
+    show_permissions: bool,
+) -> std::io::Result<()> {
+    println!("{}\n", path.bold().black().on_purple());
+    let _ = multi_line_format(config, path.to_string(), show_permissions);
+    println!();
+
+    for entry in fs::read_dir(path)? {
+        let entry = entry?;
+        let metadata = entry.metadata()?;
+        let file_name = entry.file_name();
+        let file_name_str = file_name.to_string_lossy();
+        if metadata.is_dir() {
+            recursive_format_ls(
+                config,
+                depth + 1,
+                &format!("{}/{}", path, file_name_str),
+                show_permissions,
+            )?
+        }
     }
 
     Ok(())
